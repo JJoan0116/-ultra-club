@@ -32,7 +32,7 @@ const App = () => {
   return (
     <View className='index'>
         {posts.map((post, index) => (
-          <PostCard key={index} title={post.title} content={post.content} isList />
+          <PostCard key={index} title={post.title} content={post.content} />
         ))}
         <PostForm
           formTitle={formTitle}
