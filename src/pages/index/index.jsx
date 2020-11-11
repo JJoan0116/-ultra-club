@@ -1,24 +1,52 @@
-import React, { Component } from 'react'
-import { View, Text } from '@tarojs/components'
+import React, { useCallback, useState } from 'react'
+import { View } from '@tarojs/components'
+import { PostCard, PostForm } from '../../components'
 import './index.scss'
 
-export default class Index extends Component {
+const App = () => {
+  const [posts, setPosts] = useState([{
+    title: '泰罗奥特曼',
+    content: '泰罗是奥特之父和奥特之母唯一的亲生儿子。',
+  }]);
+  const [formTitle, setTitle] = useState('');
+  const [formContent, setContent] = useState('');
 
-  componentWillMount () { }
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault()
 
-  componentDidMount () { }
+    const newPosts = posts.concat({ title: formTitle, content: formContent })
 
-  componentWillUnmount () { }
+    setPosts(newPosts);
+    setTitle('');
+    setContent('');
+  }, [posts, formTitle, formContent]);
 
-  componentDidShow () { }
+  const handleTitleInput = useCallback((e) => {
+    setTitle(e.target.value);
+  }, []);
 
-  componentDidHide () { }
+  const handleContentInput = useCallback((e) => {
+    setContent(e.target.value);
+  }, []);
 
-  render () {
-    return (
-      <View className='index'>
-        <Text>Hello world!</Text>
+  return (
+    <View className='index'>
+        {posts.map((post, index) => (
+          <PostCard key={index} title={post.title} content={post.content} />
+        ))}
+        <PostForm
+          formTitle={formTitle}
+          formContent={formContent}
+          handleSubmit={handleSubmit}
+          handleTitleInput={handleTitleInput}
+          handleContentInput={handleContentInput}
+        />
       </View>
-    )
-  }
+  )
 }
+
+App.config = {
+  navigationBarTitleText: '首页',
+}
+
+export default App;
